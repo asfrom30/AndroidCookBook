@@ -8,6 +8,10 @@ import android.widget.Toast;
  * Created by DOYOON on 5/30/2017.
  */
 
+/*
+    Version : 0.0.1
+ */
+
 public class LogUtil {
 
     public static void log(Activity activity, String TAG, String log){

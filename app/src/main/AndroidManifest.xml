@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.doyoon.android.cookbook">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +13,20 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".examine.functional.Functional" />
-        <activity android:name=".mvp.comport.ComportMvpActivityMain">
+        <activity android:name=".mvp.comport.ComportMvpActivityMain"></activity>
+        <activity android:name=".mvp.comport.ComportMvpListActivity" />
+        <activity android:name=".mvp.comport.ComportMvpActivityDetail" />
+        <activity android:name=".mvp.strict.StrictMvpMainActivityImpl" />
+        <activity android:name=".recipe.RecipeActivity" />
+        <activity android:name=".oop.interfaces.MapsActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.comport.ComportMvpListActivity" />
-        <activity android:name=".mvp.comport.ComportMvpActivityDetail"></activity>
-        <activity android:name=".mvp.strict.StrictMvpMainActivityImpl"></activity>
+        <activity
+            android:name=".oop.example.toilet.HttpUrlConnectionMain"
+            android:label="@string/title_activity_http_url_connection_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

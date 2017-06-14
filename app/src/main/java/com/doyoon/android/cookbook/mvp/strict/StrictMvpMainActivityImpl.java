@@ -17,7 +17,7 @@ public class StrictMvpMainActivityImpl extends AppCompatActivity implements Stri
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.presenter = new StrictMvpMainPresenterImpl();
+        this.presenter = new StrictMvpMainPresenterImpl(this);
         this.view = new StrictMvpMainViewImpl(this, this.presenter);
     }
 }

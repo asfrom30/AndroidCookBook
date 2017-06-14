@@ -10,6 +10,14 @@ import android.support.annotation.RequiresApi;
  * Created by DOYOON on 6/1/2017.
  */
 
+/*
+    Version : 0.0.1
+ */
+/*
+    Version : 0.0.2
+        @param in PermissionUtil Class Type changed(Activity Class to Context Class)
+        depend on parent class
+ */
 
 public class PermissionUtil {
 

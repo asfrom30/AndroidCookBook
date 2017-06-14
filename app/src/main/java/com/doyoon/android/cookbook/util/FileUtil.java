@@ -12,9 +12,13 @@ import java.io.FileWriter;
  * Created by DOYOON on 5/26/2017.
  */
 
-public class FileUtil {
+/*
+    Version : 0.0.1
+ */
 
+public class FileUtil {
     private static final String TAG = "FILE_UTIL"; // 많이 나오니까 미리 변경
+
 
     public static boolean write(Context context, String filename, String content){
         boolean result = false;

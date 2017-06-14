@@ -8,12 +8,13 @@ import android.app.Activity;
 
 public class StrictMvpMainPresenterImpl implements StrictMvpMainPresenter{
 
+    private Activity activity;
 
     public StrictMvpMainPresenterImpl(Activity activity) {
 
         //TODO 접근이 안되네....
         this.activity = activity;
-//    }
+    }
 
     @Override
     public void onGoListBtn() {
