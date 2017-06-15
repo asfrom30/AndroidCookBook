@@ -3,6 +3,7 @@
     package="com.doyoon.android.cookbook">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,20 +14,28 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".examine.functional.Functional" />
-        <activity android:name=".mvp.comport.ComportMvpActivityMain"></activity>
+        <activity android:name=".mvp.comport.ComportMvpActivityMain" />
         <activity android:name=".mvp.comport.ComportMvpListActivity" />
         <activity android:name=".mvp.comport.ComportMvpActivityDetail" />
         <activity android:name=".mvp.strict.StrictMvpMainActivityImpl" />
         <activity android:name=".recipe.RecipeActivity" />
-        <activity android:name=".oop.interfaces.MapsActivityMain">
+        <activity android:name=".oop.ToiletMapActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".oop.example.toilet.HttpUrlConnectionMain"
-            android:label="@string/title_activity_http_url_connection_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>
