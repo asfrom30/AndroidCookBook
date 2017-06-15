@@ -1,6 +1,5 @@
 package com.doyoon.android.cookbook.oop.domain;
 
-import com.doyoon.android.cookbook.oop.domain.asynctask.AsyncJson;
 import com.doyoon.android.cookbook.oop.domain.toilet.Toilet;
 
 import java.util.List;
@@ -27,7 +26,6 @@ public class RemoteToiletDAOImpl implements RemoteToiletDAO {
 
     @Override
     public List<Toilet> getToiletList(Callback obj) {
-        AsyncJson AsyncJsonImpl.getIn
 
         return null;
     }

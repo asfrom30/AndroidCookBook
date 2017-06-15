@@ -97,6 +97,7 @@ public class MapsActivityView implements OnMapReadyCallback{
     }
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+        /* 여기에 List를 선언하면 View가 모델을 가지게 된다. 그러면 MVC가 아니라 MVP가 된다. */
 
         @Override
         public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
