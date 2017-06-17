@@ -1,7 +1,9 @@
 package com.doyoon.android.cookbook.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,13 +16,25 @@ import com.doyoon.android.cookbook.BuildConfig;
 import java.io.File;
 import java.io.IOException;
 
+
 /*
     Version : 0.0.1 on 6/10/2017.
+ */
+/*
+    Version : 0.0.2 on 6/17/2017
+        -. update Image immediately after take a photo
+        -. implement callback funtion
+ */
+/*
+    need to do
+    1. File Path auto input and recognize when call method(Handle file_path.xml automatically)
+    2. test under lower version
  */
 
 public class DeviceUtil {
 
     public static String TAG = DeviceUtil.class.getName();
+    public static final int CAMERA_REQ_CODE = 1;
 
     /* Camera Util */
     /* Note : 세개가 모두 일치해야됨.*/
@@ -43,17 +57,20 @@ public class DeviceUtil {
     //    마시멜로우 이상 버전부터는 FileProvider를 통해서만 권한을 획득할 수 있다. => fileURI = FileProvider.getUriForFile((activity.getBaseContext()), authority, tempFile) */
 
     public static class Camera{
-        public static Uri takePhoto(Activity activity, String xmlExternalPath/* Folder Name */ , int requestCode) {
+        public static String currentPhotoAbsolutePath = null;
+        public static Uri currentPhotoUri = null;
+
+        public static void takePhoto(Activity activity, String xmlExternalPath/* Folder Name */ , int requestCode) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
             /* Under Lollipop Version Doesn't need Convert File to URI*/
             /* Just send Intent and In onActivityResult, You can get simply File's URI using Intent.getData(); */
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
                 activity.startActivityForResult(intent, requestCode);
-                return null;
+                return;
             }
 
-            Uri fileURI = null;
+            currentPhotoUri = null;
             File tempFile = null;
 
             try {
@@ -65,24 +82,27 @@ public class DeviceUtil {
 
             if (tempFile == null) {
                 Log.e(TAG, "Created File is null for Camera(Photo Capture)");
-                return null;
+                return;
             }
 
             /* Under Marshmallow Version doesn't need File Provider during access URI*/
+            Uri tempUri = null;
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                fileURI = Uri.fromFile(tempFile);
+                tempUri = Uri.fromFile(tempFile);
             } else { /* You have to access Using File Privider */
                 // File Provider need Authority
                 // Authority should be set in manifest file using <provider> tag for run below code
                 /* Import package again */
                 String authority = BuildConfig.APPLICATION_ID + ".provider"; // get app ID from Gradle
-                fileURI = FileProvider.getUriForFile((activity.getBaseContext()), authority, tempFile);
+                tempUri = FileProvider.getUriForFile((activity.getBaseContext()), authority, tempFile);
             }
 
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileURI);
-            activity.startActivityForResult(intent, requestCode); // NOTE : Context doesn't have startActivityForResult() method.
+            Camera.currentPhotoAbsolutePath = tempFile.getAbsolutePath();
+            Camera.currentPhotoUri = tempUri;
 
-            return fileURI;
+            /* Send Intent */
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri);
+            activity.startActivityForResult(intent, requestCode); // NOTE : Context doesn't have startActivityForResult() method.
         }
 
         // 파일생성에 관한 함수를 만들고 Exception에 담는다.
@@ -105,7 +125,44 @@ public class DeviceUtil {
             );
             return tempFile;
         }
+
+        public static void onActivityResult(int requestCode, int resultCode, Intent data, Context context, Callback callback) {
+            // Get Current Photo URI, the way is different depend on android version
+            Uri uri = Camera.getCurrentPhotoUri(data);
+
+            // update Gallery
+            Camera.updateGallery(context);
+
+            // 호출한 쪽에서 원하는 함수를 실행한다.
+            callback.postProcAfterCamera(uri);
+        }
+
+        private static void updateGallery(Context context){
+            /* Update Gallery */
+            MediaScannerConnection.scanFile(context, new String[] { Camera.currentPhotoAbsolutePath }, null, new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                    Log.i("ExternalStorage", "Scanned " + path + ":");
+                    Log.i("ExternalStorage", "-> uri=" + uri);
+                }
+            });
+        }
+
+        /* 버전에 따라 Photo Uri를 획득하는 과정이 다르다.
+        * 버전이 낮은 경우 result Intent에서 바로 꺼내 쓸 수 있고, 버전이 높은 경우 보안 때문에 Intent가 null로 넘어온다.
+        * 이 경우 호출시 미리 Uri를 생성하고 기억하고 있어야 한다. */
+        private static Uri getCurrentPhotoUri(Intent data){
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                return data.getData(); // Return URI
+            } else {
+                return Camera.currentPhotoUri;  // takePhoto() method에서 기억하고 있는것을 저장해두었다가 넘겨준다.
+            }
+        }
+
+        public interface Callback{
+            void postProcAfterCamera(Uri currentPhotoUri);
+        }
     }
+
 
 
 }
