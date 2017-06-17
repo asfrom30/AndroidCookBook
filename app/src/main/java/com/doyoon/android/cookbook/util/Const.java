@@ -10,10 +10,8 @@ package com.doyoon.android.cookbook.util;
 
 public class Const {
 
-
-    // 그루핑
-    public static class Device {
-        public static final int REQ_CODE_CAMERA = 2000;
+    public static class IntentReqCode {
+        public static final int CAMERA = 1;
     }
 
     public static class Permission {
