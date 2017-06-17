@@ -67,6 +67,7 @@ public class DeviceUtil {
             /* Just send Intent and In onActivityResult, You can get simply File's URI using Intent.getData(); */
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
                 activity.startActivityForResult(intent, requestCode);
+                Log.e("TAG", "1");
                 return;
             }
 
@@ -99,6 +100,12 @@ public class DeviceUtil {
 
             Camera.currentPhotoAbsolutePath = tempFile.getAbsolutePath();
             Camera.currentPhotoUri = tempUri;
+
+            if (currentPhotoUri == null) {
+                Log.e(TAG, "Current Photo가 null 입니다.");
+            } else {
+                Log.e(TAG, currentPhotoUri.toString());
+            }
 
             /* Send Intent */
             intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoUri);

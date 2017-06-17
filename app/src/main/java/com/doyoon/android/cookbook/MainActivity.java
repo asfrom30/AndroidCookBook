@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements PermissionControl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case DeviceUtil.CAMERA_REQ_CODE :
                 if(resultCode == RESULT_OK) DeviceUtil.Camera.onActivityResult(requestCode, resultCode, data, getBaseContext(), this);
