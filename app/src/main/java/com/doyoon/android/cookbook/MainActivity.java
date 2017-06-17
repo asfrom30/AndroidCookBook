@@ -11,10 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.doyoon.android.cookbook.util.DeviceUtil;
+import com.doyoon.android.cookbook.util.Const;
 import com.doyoon.android.cookbook.util.PermissionControl;
+import com.doyoon.android.cookbook.util.device.CameraHelper;
 
-public class MainActivity extends AppCompatActivity implements PermissionControl.Callback, DeviceUtil.Camera.Callback, View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements PermissionControl.Callback, CameraHelper.Callback, View.OnClickListener{
 
 
     private ImageView imageView;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PermissionControl
 
     @Override
     public void onClick(View v) {
-       DeviceUtil.Camera.takePhoto(this, "doyoon", DeviceUtil.CAMERA_REQ_CODE);
+        CameraHelper.takePhoto(this, "doyoon", Const.IntentReqCode.CAMERA);
     }
 
     @Override
@@ -61,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements PermissionControl
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case DeviceUtil.CAMERA_REQ_CODE :
-                if(resultCode == RESULT_OK) DeviceUtil.Camera.onActivityResult(requestCode, resultCode, data, getBaseContext(), this);
+            case Const.IntentReqCode.CAMERA :
+                if(resultCode == RESULT_OK) CameraHelper.onActivityResult(requestCode, resultCode, data, getBaseContext(), this);
                 else Log.e("TAG", "Result Code를 체크해주세요.");
                 break;
             default:
