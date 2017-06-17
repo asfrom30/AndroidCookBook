@@ -19,7 +19,7 @@
         <activity android:name=".mvp.comport.ComportMvpActivityDetail" />
         <activity android:name=".mvp.strict.StrictMvpMainActivityImpl" />
         <activity android:name=".recipe.RecipeActivity" />
-        <activity android:name=".oop.ToiletMapActivityMain">
+        <activity android:name=".oop.MapActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

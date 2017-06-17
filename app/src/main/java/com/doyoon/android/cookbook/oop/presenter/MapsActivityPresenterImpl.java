@@ -1,8 +1,9 @@
 package com.doyoon.android.cookbook.oop.presenter;
 
 import com.doyoon.android.cookbook.oop.domain.RemoteToiletDAO;
-import com.doyoon.android.cookbook.oop.domain.asynctask.AsyncJson;
-import com.doyoon.android.cookbook.oop.domain.asynctask.AsyncJsonImpl;
+import com.doyoon.android.cookbook.oop.domain.RemoteToiletDAOImpl;
+import com.doyoon.android.cookbook.oop.domain.asynctask.CustomAsyncTask;
+import com.doyoon.android.cookbook.oop.domain.asynctask.CustomAsyncTaskImpl;
 import com.doyoon.android.cookbook.oop.domain.toilet.GeoInfoPublicToiletWGS;
 import com.doyoon.android.cookbook.oop.domain.toilet.Toilet;
 import com.doyoon.android.cookbook.oop.view.MapsActivityView;
@@ -22,7 +23,7 @@ import java.net.URL;
  * Created by DOYOON on 6/14/2017.
  */
 
-public class MapsActivityPresenterImpl implements MapsActivityPresenter, AsyncJson.Callback {
+public class MapsActivityPresenterImpl implements MapsActivityPresenter, CustomAsyncTask.Callback {
 
     // http://openapi.seoul.go.kr:8088/6a734e76676d697235397548734e42/json/GeoInfoPublicToiletWGS/1/10
     static final String URL_PREFIX = "http://openapi.seoul.go.kr:8088/";
@@ -31,7 +32,7 @@ public class MapsActivityPresenterImpl implements MapsActivityPresenter, AsyncJs
     private static final int PAGE_OFFSET = 10;
 
     private RemoteToiletDAO remoteToiletDAO;
-    private int page = 1;
+    private int page = 0;
     private GoogleMap map;
     private MapsActivityView view;
 
@@ -48,15 +49,16 @@ public class MapsActivityPresenterImpl implements MapsActivityPresenter, AsyncJs
 
     @Override
     public void notifyMapOnReady() {
-        /* 이 함수를 쪼갤 수 없는 이유가...
-        * 응답을 기다렸다가 나중에 UI를 갱신하는 방식이기 때문이다...
-        * 여기에서 함수를 쪼개버리면. 밑에 함수를 실행하고 바로 넘어가 버린다.
-        * 즉 응답을 요청하고, 받아오고 받아온뒤에 실행하는 함수들은 아래에 넣어주어야한다.
-        * 그에 맞춰서 Naming도 변경해야 한다. */
-        // this.fetchJsonData(urlString);
+        this.getNextData();
+    }
 
-        String urlString = buildStringUrl();
-        this.fetchDataOnAsync(urlString);
+    private void getNextData(){
+        this.nextPage();
+        this.fetchDataOnAsync(buildStringUrl());
+    }
+
+    private void nextPage(){
+        this.page++;
     }
 
     private String buildStringUrl() {
@@ -71,24 +73,24 @@ public class MapsActivityPresenterImpl implements MapsActivityPresenter, AsyncJs
     }
 
     private void fetchDataOnAsync(String stringUrl) {
-        //TODO static으로 callback 또는 Interface를 구현할 수는 없는 걸까?
-        // AsyncJson asyncJson = new AsyncJsonImpl();
-        // String ressult = asyncJson.execute(this);
+        CustomAsyncTaskImpl.getInstance().execute(this, stringUrl);
 
-        AsyncJsonImpl.getInstance().execute(this, stringUrl);
-
+        /* Domain 생성 및 상호참조 */
+//      RemoteToiletDAO dao = DummyToiletDAOImp.getInstance();// 더미테스트를 할 수 있다.
+        RemoteToiletDAO dao = RemoteToiletDAOImpl.getInstance();
+        // presenter.setToiletDAO(dao);
     }
 
-    /* Callback은 Presenter에서 구현한다. 왜냐하면 View객체를 가지고 있고 Business 로직을 여기에 짜면 관심사를 분리할 수 있다.
-    ...... */
     @Override
     public void preExecute() {
 
     }
 
     @Override
-    public String doInBackground(String stringUrl) {
+    public String doInBackground(String... params) {
+
         String result = "";
+        String stringUrl = params[0];
 
         try {
             /* Request */
@@ -116,7 +118,6 @@ public class MapsActivityPresenterImpl implements MapsActivityPresenter, AsyncJs
 
     @Override
     public void postExecute(String result) {
-        // Json을 Gson으로 변환한다.
         Gson gson = new Gson();
         Toilet toiletStructure = gson.fromJson(result, Toilet.class);
 

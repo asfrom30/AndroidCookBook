@@ -18,7 +18,12 @@ import android.support.annotation.RequiresApi;
         @param in PermissionUtil Class Type changed(Activity Class to Context Class)
         depend on parent class
  */
+/*
+    @Deprecated
+    This class replaces Permission Control
+ */
 
+@Deprecated
 public class PermissionUtil {
 
     @RequiresApi(api = Build.VERSION_CODES.M)

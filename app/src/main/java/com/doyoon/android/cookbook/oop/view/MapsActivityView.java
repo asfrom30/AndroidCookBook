@@ -45,6 +45,8 @@ public class MapsActivityView implements OnMapReadyCallback{
         this.presenter = presenter;
         this.activity = activity;
 
+        presenter.setView(this);
+
         /* layout */
         this.activity.setContentView(R.layout.activity_toilet_map_main);
 
@@ -68,7 +70,6 @@ public class MapsActivityView implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         this.map = googleMap;
         this.presenter.notifyMapOnReady();
     }
@@ -89,7 +90,6 @@ public class MapsActivityView implements OnMapReadyCallback{
 
     public void updateListView() {
         this.adapter.notifyDataSetChanged();
-        Log.e("Main", "화장실개수는...." + this.toiletList.size());
     }
 
     public void updateTitleTextView(int totalToiletNumber){
@@ -97,8 +97,6 @@ public class MapsActivityView implements OnMapReadyCallback{
     }
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-        /* 여기에 List를 선언하면 View가 모델을 가지게 된다. 그러면 MVC가 아니라 MVP가 된다. */
-
         @Override
         public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_toilet_layout, null);

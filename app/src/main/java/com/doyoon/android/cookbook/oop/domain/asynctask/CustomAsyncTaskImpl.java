@@ -6,19 +6,19 @@ import android.os.AsyncTask;
  * Created by DOYOON on 6/15/2017.
  */
 
-public class AsyncJsonImpl implements AsyncJson{
+public class CustomAsyncTaskImpl implements CustomAsyncTask {
 
-    public static AsyncJson instance;
+    public static CustomAsyncTask instance;
 
     /* Singleton */
-    public static AsyncJson getInstance(){
+    public static CustomAsyncTask getInstance(){
         if (instance == null) {
-            instance = new AsyncJsonImpl();
+            instance = new CustomAsyncTaskImpl();
         }
         return instance;
     }
 
-    private AsyncJsonImpl() {
+    private CustomAsyncTaskImpl() {
 
     }
 
@@ -34,8 +34,7 @@ public class AsyncJsonImpl implements AsyncJson{
             /* Sub Thread */
             @Override
             protected String doInBackground(String... params) {
-                String stringUrl = params[0];
-                String reuslt = callback.doInBackground(stringUrl);
+                String reuslt = callback.doInBackground(params);
                 return reuslt;
             }
 
@@ -52,10 +51,5 @@ public class AsyncJsonImpl implements AsyncJson{
 
 
         }.execute(stringUrl);
-    }
-
-    @Override
-    public String getFetchJsonString(String url) {
-        return null;
     }
 }
