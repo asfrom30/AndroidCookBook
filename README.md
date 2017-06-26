@@ -17,7 +17,7 @@ getType — Like getInstance, but used when the factory method is in a different
 newType — Like newInstance, but used when the factory method is in a different class. Type indicates the type of object returned by the factory method.
 ````
 
-example
+* example
 ````
 Lists.newArrayListWithCapacity(100);
 ImmutableList.of("Hello", "World");
