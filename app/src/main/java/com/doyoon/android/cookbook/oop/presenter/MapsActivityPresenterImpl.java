@@ -75,7 +75,7 @@ public class MapsActivityPresenterImpl implements MapsActivityPresenter, CustomA
     private void fetchDataOnAsync(String stringUrl) {
         CustomAsyncTaskImpl.getInstance().execute(this, stringUrl);
 
-        /* Domain 생성 및 상호참조 */
+        /* Model 생성 및 상호참조 */
 //      RemoteToiletDAO dao = DummyToiletDAOImp.getInstance();// 더미테스트를 할 수 있다.
         RemoteToiletDAO dao = RemoteToiletDAOImpl.getInstance();
         // presenter.setToiletDAO(dao);

@@ -72,6 +72,58 @@ What makes you say that either a singleton or a static method isn't thread-safe?
 
 The big difference between a singleton and a bunch of static methods is that singletons can implement interfaces (or derive from useful base classes, although that's less common, in my experience), so you can pass around the singleton as if it were "just another" implementation.
 
+#### Singleton vs multiton
+
+#### Singleton with Arguments in Java
+[Link here](https://stackoverflow.com/questions/1050991/singleton-with-arguments-in-java)
+
+I'll make my point very clear: a singleton with parameters is not a singleton.
+A singleton, by definition, is an object you want to be instantiated no more than once. If you are trying to feed parameters to the constructor, what is the point of the singleton?
+You have two options. If you want your singleton to be initialized with some data, you may load it with data after instantiation, like so:
+```
+SingletonObj singleton = SingletonObj.getInstance();
+singleton.init(paramA, paramB); // init the object with data
+```
+If the operation your singleton is performing is recurring, and with different parameters every time, you might as well pass the parameters to the main method being executed:
+
+but..
+
+sorry, thats not true. there are situations where you have to pass in dynamicly created parameters which stay the same for the hole application runtime. so you cant use a constant within the singleton but have to pass that constant when its created. after passed once its the same constant for the hole time. a setter wont do the job if you need that specific constant within the constructor. – masi Nov 5 '11 at 17:57
+
+#### newInstance
+
+## Design Pattern
+
+#### Factory
+Need to study and examine below code.
+```java 
+public final class UsefulObjFactory {
+    private static Map<Integer, UsefulObj> store =
+        new HashMap<Integer, UsefulObj>();
+    public static final class UsefulObj {
+        private UsefulObj(int parameter) {
+            // init
+        }
+        public void someUsefulMethod() {
+            // some useful operation
+        }
+    }
+    public static UsefulObj get(int parameter) {
+        synchronized (store) {
+            UsefulObj result = store.get(parameter);
+            if (result == null) {
+                result = new UsefulObj(parameter);
+                store.put(parameter, result);
+            }
+            return result;
+        }
+    }
+}
+
+pulbic class CustomUsefulObj extends UsefulObjFactory.UsefulObj {
+}
+```
+
 
 ## MVP
 

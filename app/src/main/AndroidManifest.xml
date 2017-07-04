@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -36,11 +37,24 @@
         <activity android:name=".mvp.comport.ComportMvpListActivity" />
         <activity android:name=".mvp.comport.ComportMvpActivityDetail" />
         <activity android:name=".mvp.strict.StrictMvpMainActivityImpl" />
-        <activity android:name=".recipe.RecipeActivity" />
+        <activity android:name=".examine.functional.RecipeActivity" />
         <activity android:name=".oop.MapActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- Recycler Fragment Example -->
+        <activity android:name=".recipe.fragment.example.recycler.ActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <!-- Permission Activity Example -->
+        <activity android:name=".recipe.activity.example.permission.ActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 
