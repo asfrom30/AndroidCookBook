@@ -1,4 +1,4 @@
-package com.doyoon.android.cookbook.recipe;
+package com.doyoon.android.cookbook.examine.functional;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
