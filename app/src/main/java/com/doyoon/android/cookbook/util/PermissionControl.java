@@ -30,7 +30,7 @@ public class PermissionControl {
     /* Overload requestAndRunOrNot()*/
     /* Activity랑 Callback을 따로받는것이 아니라 동시에 받는다. istanceof로 체크하고 런타임 퍼미션 */
     public static void requestAndRunOrNot(Activity activity, String[] permissions){
-        if(activity instanceof  Callback){
+        if(!(activity instanceof  Callback)){
             throw new RuntimeException("Must Implement PermissionControl.CallBack");
         }
 
